@@ -1,0 +1,26 @@
+/* Footer.css */
+.footer {
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 20px 0; /* Vertical padding */
+    border-top: 1px solid #dee2e6; /* Border on top */
+  }
+  
+  .footer p {
+    margin: 0;
+    color: #6c757d; /* Gray text color */
+  }
+  
+  .footer-links {
+    margin-top: 10px;
+  }
+  
+  .footer-link {
+    color: #007bff; /* Blue link color */
+    text-decoration: none; /* Remove underline */
+    margin: 0 10px; /* Spacing between links */
+  }
+  
+  .footer-link:hover {
+    text-decoration: underline; /* Underline on hover */
+  }
+  

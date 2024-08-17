@@ -1,0 +1,11 @@
+.border-box {
+    border: 2px solid #dee2e6; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 10px; /* Padding inside the border */
+    margin: 10px; /* Margin around the box */
+  }
+  
+  .border-box-img {
+    border-radius: 8px 0 0 8px; /* Rounded corners on the image */
+  }
+  

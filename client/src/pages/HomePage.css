@@ -1,0 +1,21 @@
+/* src/HomePage.css */
+.fade-background {
+    background-color: black;
+    color: white;
+    height: 100vh; /* Full viewport height */
+    width: 100vw;  /* Full viewport width */
+    animation: fadeInOut 10s infinite;
+  }
+  
+  @keyframes fadeInOut {
+    0% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.5;
+    }
+  }
+  

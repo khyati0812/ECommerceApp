@@ -1,0 +1,40 @@
+/* Existing styles */
+.navbar {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa; /* Light background for the navbar */
+    padding: 0.5rem 1rem; /* Add some padding */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+  }
+  
+  .ecommerce-icon {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+  }
+  
+  .brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #343a40; /* Darker color for better readability */
+  }
+  
+  .nav-links .nav-link {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    transition: color 0.3s ease, background-color 0.3s ease; /* Added transition for background color */
+    padding: 0.5rem 1rem; /* Add padding for better spacing */
+    border-radius: 4px; /* Rounded corners for links */
+     /* Add subtle shadow to links */
+  }
+  
+  .nav-links .nav-link:hover {
+    color: #ffffff; /* Change text color on hover */
+    background-color: #007bff; /* Add background color on hover */
+    /* Add more prominent shadow on hover */
+  }
+  
+  .nav-link i {
+    margin-right: 5px;
+  }
+  

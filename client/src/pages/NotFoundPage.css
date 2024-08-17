@@ -1,0 +1,25 @@
+.not-found-page {
+    background-color: #f8f9fa;
+    padding: 60px 0;
+  }
+  
+  .not-found-page img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .not-found-page h1 {
+    font-size: 3rem;
+    margin-top: 20px;
+  }
+  
+  .not-found-page p {
+    font-size: 1.25rem;
+    margin: 20px 0;
+  }
+  
+  .not-found-page .btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  
