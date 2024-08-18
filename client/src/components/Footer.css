@@ -1,8 +1,12 @@
 /* Footer.css */
-.footer {
+
+
+  .footer {
     background-color: #f8f9fa; /* Light gray background */
     padding: 20px 0; /* Vertical padding */
     border-top: 1px solid #dee2e6; /* Border on top */
+    text-align: center;
+    width: 100%;
   }
   
   .footer p {

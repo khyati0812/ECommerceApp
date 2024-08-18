@@ -1,9 +1,7 @@
-import React from 'react'
-import Layout from '../components/Layout'
+import React from "react";
+import Layout from "../components/Layout";
 const HomePageYoutube = () => {
-  return (
-    <Layout>HomePageYoutube</Layout>
-  )
-}
+  return <Layout title="HomePage">HomePageYoutube</Layout>;
+};
 
-export default HomePageYoutube
+export default HomePageYoutube;

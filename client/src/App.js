@@ -8,6 +8,7 @@ import AboutUs from "./pages/About";
 import HomePageYoutube from "./pages/HomePageYoutube";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+
 function App() {
   return (
     <Routes>
@@ -22,9 +23,9 @@ function App() {
       <Route
         path="/"
         element={
-          <Layout>
+          
             <HomePageYoutube />
-          </Layout>
+        
         }
       />
       <Route

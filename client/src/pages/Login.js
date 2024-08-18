@@ -1,6 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Container, Form, Button, Alert } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import CSS for toast
 import "./Login.css"; // Custom CSS for styling
 
 const Login = () => {
@@ -12,6 +15,25 @@ const Login = () => {
   } = useForm();
   const [submissionStatus, setSubmissionStatus] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
+  const navigate = useNavigate();
+
+  const playErrorSound = () => {
+    const audio = new Audio("error_sound.wav");
+    audio.play();
+  };
+
+  const notifyError = (message) => {
+    playErrorSound();
+    toast.error(message, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -22,80 +44,101 @@ const Login = () => {
       });
 
       const result = await response.json();
+      console.log("Response Status:", response.status); // Log status
+      console.log("Response Data:", result); // Log response data
+
       if (response.ok) {
         setSubmissionStatus("success");
         setErrorMessage("");
         reset(); // Clear the form
 
-        // Store token in localStorage or sessionStorage
-        localStorage.setItem("authToken", result.token);
+        toast.success("Login successful!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
 
-        // Optionally, you can redirect the user after a successful login
-        // window.location.href = "/dashboard";
+        setTimeout(() => {
+          navigate("/");
+        }, 2000); // Wait for 2 seconds before navigating
       } else {
         setSubmissionStatus("error");
         setErrorMessage(result.error || "Invalid credentials");
+        notifyError(result.error || "Invalid credentials");
       }
     } catch (error) {
+      console.error("Login Error:", error);
       setSubmissionStatus("error");
       setErrorMessage("An error occurred. Please try again.");
+      notifyError("An error occurred. Please try again.");
     }
   };
 
   return (
-    <Container className="login-form">
-      <h2 className="text-center mb-4">Login</h2>
-      {submissionStatus && (
-        <Alert variant={submissionStatus === "success" ? "success" : "danger"}>
-          {submissionStatus === "success"
-            ? "Login successful!"
-            : errorMessage}
-        </Alert>
-      )}
-      <Form onSubmit={handleSubmit(onSubmit)}>
-        <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: "Invalid email format",
-              },
-            })}
-            isInvalid={!!errors.email}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.email?.message}
-          </Form.Control.Feedback>
-        </Form.Group>
+    <div className="login-form-container">
+      <Container className="login-form">
+        <h2 className="text-center mb-4">Login</h2>
+        {submissionStatus && (
+          <Alert
+            variant={submissionStatus === "success" ? "success" : "danger"}
+          >
+            {submissionStatus === "success"
+              ? "Login successful!"
+              : errorMessage}
+          </Alert>
+        )}
+        <Form onSubmit={handleSubmit(onSubmit)}>
+          <Form.Group className="mb-3" controlId="formEmail">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter your email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email format",
+                },
+              })}
+              isInvalid={!!errors.email}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.email?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-        <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter your password"
-            {...register("password", {
-              required: "Password is required",
-              minLength: {
-                value: 6,
-                message: "Password must be at least 6 characters long",
-              },
-            })}
-            isInvalid={!!errors.password}
-          />
-          <Form.Control.Feedback type="invalid">
-            {errors.password?.message}
-          </Form.Control.Feedback>
-        </Form.Group>
+          <Form.Group className="mb-3" controlId="formPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter your password"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters long",
+                },
+              })}
+              isInvalid={!!errors.password}
+            />
+            <Form.Control.Feedback type="invalid">
+              {errors.password?.message}
+            </Form.Control.Feedback>
+          </Form.Group>
 
-        <Button variant="primary" type="submit" className="w-100">
-          Login
-        </Button>
-      </Form>
-    </Container>
+          <Button variant="primary" type="submit" className="w-100">
+            Login
+          </Button>
+        </Form>
+
+        {/* Toast Container for notifications */}
+        <ToastContainer />
+      </Container>
+    </div>
   );
 };
 

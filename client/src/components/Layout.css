@@ -1,0 +1,12 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* Full viewport height */
+  }
+  
+  .content {
+    min-height: 100vh;
+    flex: 4; /* Allows the content to expand, pushing the footer down */
+  }
+  
