@@ -1,11 +1,11 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Container, Form, Button, Alert } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom"; // Import useLocation
 import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import CSS for toast
-import "./Login.css"; // Custom CSS for styling
 import { useAuth } from "../context/auth";
+import "react-toastify/dist/ReactToastify.css";
+import "./Login.css";
 
 const Login = () => {
   const {
@@ -18,6 +18,9 @@ const Login = () => {
   const [submissionStatus, setSubmissionStatus] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || "/"; // Get the page to redirect to after login
 
   const playErrorSound = () => {
     const audio = new Audio("error_sound.wav");
@@ -46,8 +49,6 @@ const Login = () => {
       });
 
       const result = await response.json();
-      console.log("Response Status:", response.status); // Log status
-      console.log("Response Data:", result); // Log response data
 
       if (response.ok) {
         setAuth({
@@ -56,7 +57,7 @@ const Login = () => {
         });
         setSubmissionStatus("success");
         setErrorMessage("");
-        reset(); // Clear the form
+        reset();
 
         toast.success("Login successful!", {
           position: "top-right",
@@ -68,8 +69,9 @@ const Login = () => {
           progress: undefined,
         });
 
+        // Redirect to the page the user tried to access (or home if none)
         setTimeout(() => {
-          navigate("/");
+          navigate(from, { replace: true });
         }, 2000); // Wait for 2 seconds before navigating
       } else {
         setSubmissionStatus("error");
@@ -141,7 +143,6 @@ const Login = () => {
           </Button>
         </Form>
 
-        {/* Toast Container for notifications */}
         <ToastContainer />
       </Container>
     </div>

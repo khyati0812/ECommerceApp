@@ -10,6 +10,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useAuth } from "./context/auth";
 import Dashboard from "./pages/user/Dashboard";
+import ProtectedRoute from "./pages/ProtectedRoute";
 function App() {
   const [auth, setAuth] = useAuth();
   return (
@@ -22,6 +23,9 @@ function App() {
           </Layout>
         }
       />
+      <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       <Route
         path="/"
         element={
@@ -70,6 +74,7 @@ function App() {
           </Layout>
         }
       />
+      
       <Route
         path="*"
         element={
