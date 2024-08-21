@@ -96,7 +96,7 @@ const loginController = async (req, res) => {
     // If credentials are valid, you might want to create a session or token (e.g., JWT)
     // For now, we'll just return a success message
     console.log("User login successful".green);
-    return res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({ message: "Login successful", token, user });
   } catch (error) {
     // Handle unexpected errors
     console.log("Error in loginController:".red, error.message.red);

@@ -8,8 +8,10 @@ import AboutUs from "./pages/About";
 import HomePageYoutube from "./pages/HomePageYoutube";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-
+import { useAuth } from "./context/auth";
+import Dashboard from "./pages/user/Dashboard";
 function App() {
+  const [auth, setAuth] = useAuth();
   return (
     <Routes>
       <Route
@@ -57,6 +59,14 @@ function App() {
         element={
           <Layout>
             <Login />
+          </Layout>
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          <Layout>
+            <Dashboard />
           </Layout>
         }
       />

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import CSS for toast
 import "./Login.css"; // Custom CSS for styling
+import { useAuth } from "../context/auth";
 
 const Login = () => {
   const {
@@ -13,6 +14,7 @@ const Login = () => {
     formState: { errors },
     reset,
   } = useForm();
+  const [auth, setAuth] = useAuth();
   const [submissionStatus, setSubmissionStatus] = React.useState("");
   const [errorMessage, setErrorMessage] = React.useState("");
   const navigate = useNavigate();
@@ -48,6 +50,10 @@ const Login = () => {
       console.log("Response Data:", result); // Log response data
 
       if (response.ok) {
+        setAuth({
+          user: result.user,
+          token: result.token,
+        });
         setSubmissionStatus("success");
         setErrorMessage("");
         reset(); // Clear the form

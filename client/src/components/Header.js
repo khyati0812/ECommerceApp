@@ -1,9 +1,18 @@
 import React from 'react';
 import { Container, Navbar, Nav, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useState } from "react";
 import './Header.css'; // Custom CSS for styling
-
+import { useAuth } from '../context/auth';
 const Header = () => {
+  const [auth, setAuth] = useAuth();
+
+  const handleLogout = () => {
+    // Remove auth from localStorage
+    localStorage.removeItem('auth');
+    // Set auth to null to re-render the component
+    setAuth({...auth,user:null,token:""});
+  };
   return (
     <Navbar bg="light" expand="lg" className="mb-4 navbar">
       <Container>
@@ -20,8 +29,14 @@ const Header = () => {
           <Nav className="me-auto nav-links">
             <Nav.Link as={Link} to="/" className="nav-link">Home</Nav.Link>
             <Nav.Link as={Link} to="/category" className="nav-link">Category</Nav.Link>
-            <Nav.Link as={Link} to="/register" className="nav-link">Register</Nav.Link>
-            <Nav.Link as={Link} to="/login" className="nav-link">Login</Nav.Link>
+            {auth && auth.user ? (
+        <Nav.Link onClick={handleLogout} className="nav-link" style={{ cursor: 'pointer' }}>Logout</Nav.Link>
+      ) : (
+        <>
+          <Nav.Link as={Link} to="/register" className="nav-link">Register</Nav.Link>
+          <Nav.Link as={Link} to="/login" className="nav-link">Login</Nav.Link>
+        </>
+      )}
           </Nav>
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/cart" className="nav-link">

@@ -12,4 +12,5 @@ router.get("/protected", authenticateToken,checkAdminRole, (req, res) => {
     .status(200)
     .json({ message: "This is a protected route", user: req.user });
 });
+router.get("/user-auth", authenticateToken, (req, res) => { res.status(200).send({ ok: true }) });
 module.exports = router;
