@@ -2,7 +2,16 @@ const colors = require("colors"); // Import the colors package
 const userModel = require("../models/userModel"); // Assuming your User model is in the models directory
 const hashPassword = require("../helpers/authHelper");
 const bcrypt = require("bcrypt");
+
+const jwt = require("jsonwebtoken");
+
 const { generateToken } = require("../helpers/jwtUtils");
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config();
+// Secret key for signing tokens (keep it safe and private)
+const SECRET_KEY = process.env.SECRET_KEY;
+
 const registerController = async (req, res) => {
   try {
     const { name, email, password, phone, address, role } = req.body;
@@ -103,4 +112,71 @@ const loginController = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-module.exports = { registerController, loginController };
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_ID,
+    pass: process.env.PASSWORD,
+  },
+});
+
+const requestResetController = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({ email });
+
+    console.log(user); // Debugging line to check the user object
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const token = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: "7d" });
+    const resetUrl = `http://localhost:3000/reset-password/${token}`;
+
+    const mailOptions = {
+      to: email,
+      subject: "Password Reset",
+      text: `Click the link to reset your password: ${resetUrl}`,
+    };
+
+    transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.error("Error sending email:", err); // Log the error
+        return res.status(500).json({ error: err.message }); // Return error message
+      }
+      console.log("Email sent:", info); // Log success message
+      res.status(200).json({ message: "Password reset email sent" });
+    });
+  } catch (error) {
+    console.error("Error in requestResetController:", error.message); // Log error message for debugging
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+const resetPasswordController = async (req, res) => {
+  const { token } = req.params;
+  const { password } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, SECRET_KEY);
+    const user = await userModel.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    res.status(400).json({ error: "Invalid or expired token" });
+  }
+};
+module.exports = {
+  registerController,
+  loginController,
+  requestResetController,
+  resetPasswordController,
+};

@@ -11,6 +11,9 @@ import Login from "./pages/Login";
 import { useAuth } from "./context/auth";
 import Dashboard from "./pages/user/Dashboard";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import ResetPasswordRequest from "./pages/ResetPasswordRequest";
+import ResetPassword from "./pages/ResetPassword";
+import ResetEmailSent from "./pages/ResetEmailSent";
 function App() {
   const [auth, setAuth] = useAuth();
   return (
@@ -34,6 +37,7 @@ function App() {
         
         }
       />
+       <Route path="/reset-email-sent" element={<ResetEmailSent />} />
       <Route
         path="/contact"
         element={
@@ -66,6 +70,8 @@ function App() {
           </Layout>
         }
       />
+       <Route path="/request-reset" element={<ResetPasswordRequest />} />
+       <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route
         path="/dashboard"
         element={
