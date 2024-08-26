@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import PolicyPage from "./pages/Policy"; // Adjust the path as needed
 import ContactUsPage from "./pages/Contact"; // Adjust the path as needed
 import Layout from "./components/Layout";
@@ -9,13 +9,17 @@ import HomePageYoutube from "./pages/HomePageYoutube";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import { useAuth } from "./context/auth";
-import Dashboard from "./pages/user/Dashboard";
+import UserDashboard from "./pages/user/Dashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ResetPasswordRequest from "./pages/ResetPasswordRequest";
 import ResetPassword from "./pages/ResetPassword";
 import ResetEmailSent from "./pages/ResetEmailSent";
+import AdminMenu from "./components/AdminMenu";
+
 function App() {
-  const [auth, setAuth] = useAuth();
+  const [auth] = useAuth();
+
   return (
     <Routes>
       <Route
@@ -26,18 +30,8 @@ function App() {
           </Layout>
         }
       />
-      <Route element={<ProtectedRoute />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-      <Route
-        path="/"
-        element={
-          
-            <HomePageYoutube />
-        
-        }
-      />
-       <Route path="/reset-email-sent" element={<ResetEmailSent />} />
+      <Route path="/" element={<AdminMenu />} />
+      <Route path="/reset-email-sent" element={<ResetEmailSent />} />
       <Route
         path="/contact"
         element={
@@ -70,17 +64,34 @@ function App() {
           </Layout>
         }
       />
-       <Route path="/request-reset" element={<ResetPasswordRequest />} />
-       <Route path="/reset-password/:token" element={<ResetPassword />} />
-      <Route
-        path="/dashboard"
-        element={
-          <Layout>
-            <Dashboard />
-          </Layout>
-        }
-      />
-      
+      <Route path="/request-reset" element={<ResetPasswordRequest />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+      {/* Role-based protected routes */}
+      {/* Only users with role 0 (user) can access this */}
+      <Route element={<ProtectedRoute requiredRole={1} />}>
+        <Route
+          path="/admin/dashboard"
+          element={
+            <Layout>
+              <AdminDashboard />
+            </Layout>
+          }
+        />
+      </Route>
+
+      {/* Protected route for User */}
+      <Route element={<ProtectedRoute requiredRole={0} />}>
+        <Route
+          path="/dashboard"
+          element={
+            <Layout>
+              <UserDashboard />
+            </Layout>
+          }
+        />
+      </Route>
+
       <Route
         path="*"
         element={
