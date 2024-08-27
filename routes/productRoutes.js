@@ -6,6 +6,10 @@ const {
 const {
   createProductController,
   getProductController,
+  getProductBySlug,
+  getProductPicture,
+  deleteProduct,
+  updateProductController,
 } = require("../controllers/productController");
 const productRouter = express.Router();
 const formidable = require("formidable");
@@ -30,5 +34,24 @@ productRouter.post(
   },
   createProductController
 );
+productRouter.put(
+  "/update-product/:pid",
+  authenticateToken,
+  checkAdminRole,
+  (req, res, next) => {
+    form.parse(req, (err, fields, files) => {
+      if (err) {
+        return res.status(400).send({ message: "File upload failed", err });
+      }
+      req.fields = fields;
+      req.files = files;
+      next();
+    });
+  },
+  updateProductController
+);
 productRouter.get("/get-product", getProductController);
+productRouter.get("/get-product/:slug", getProductBySlug);
+productRouter.get("/product-photo/:pid", getProductPicture);
+productRouter.delete("/delete-product/:pid", deleteProduct);
 module.exports = productRouter;
