@@ -8,21 +8,19 @@ const {
 } = require("../controllers/categoryController");
 const {
   authenticateToken,
-  checkAdminRole,
+  checkAdminRole,authenticateAndAuthorizeAdmin
 } = require("../middlewares/authMiddleware");
 const categoryRouter = express.Router();
 categoryRouter.post(
   "/create-category",
-  authenticateToken,
-  checkAdminRole,
+  authenticateAndAuthorizeAdmin,
   createCategory
 );
 categoryRouter.get("/get-all-category", getAllCategories);
 categoryRouter.get("/single-category/:slug", getSingleCategory);
 categoryRouter.delete(
   "/delete-category/:id",
-  authenticateToken,
-  checkAdminRole,
+authenticateAndAuthorizeAdmin,
   deleteCategory
 );
 categoryRouter.put(

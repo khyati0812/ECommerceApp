@@ -16,6 +16,7 @@ import ResetPasswordRequest from "./pages/ResetPasswordRequest";
 import ResetPassword from "./pages/ResetPassword";
 import ResetEmailSent from "./pages/ResetEmailSent";
 import AdminMenu from "./components/AdminMenu";
+import CreateCategory from "./pages/Admin/CreateCategory";
 
 function App() {
   const [auth] = useAuth();
@@ -31,6 +32,16 @@ function App() {
         }
       />
       <Route path="/" element={<AdminMenu />} />
+      <Route element={<ProtectedRoute requiredRole={1} />}>
+        <Route
+          path="/create-category"
+          element={
+            <Layout>
+              <CreateCategory />
+            </Layout>
+          }
+        />
+      </Route>
       <Route path="/reset-email-sent" element={<ResetEmailSent />} />
       <Route
         path="/contact"
